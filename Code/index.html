@@ -3,104 +3,85 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <style>
-
     @import url('https://fonts.googleapis.com/css?family=Roboto');
-        html {
-
-            width: 350px;
-            height: 100vh;
-            background-color: #FCA50A;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        div#baslik {
-            color: #515256;
-            font-size: 50;
-            text-align: center;
-            font-weight: bold;
-            border-style: dotted;
-            width: 350;
-        }
-
-        div#sistem {
-            width: 350px;
-            font-size: 20px;
-            color: ;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        label {
-
-             font-size: 20;
-
-        }
-
-        textarea#hatirla_metin {
-            width: 350;
-            height: 40;
-            border-radius: 10px;
-            border-color: white;
-            width: 350;
-        }
-
-        select {
-            margin-left: 10;
-            margin-right: 10;
-            font-size: 15;
-        }
-
-        input#ekle {
-            width: 150;
-            height: 40;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 13;
-            color: white;
-            background-color: #2A3175;
-            border-color: transparent;
-
-        }
-
-        input#sil_no {
-            width: 50;
-            height: 40;
-            background-color: #FF6666;
-            border: transparent;
-            text-align: center;
-
-        }
-
-        input#sil {
-          width:  120;
-          height: 40;
-          margin-left: auto;
-          margin-right: auto;
-          margin-top: 13;
-          color: white;
-          background-color: #FF6666;
-          border-color: transparent;
-        }
-
-        textarea#kayitlar {
-            margin-top: 5;
-            height: 200;
-            width: 350;
-            color: black;
-            background-color: transparent;
-            border-radius: 10px;
-            border-width: thick;
-            border-style: dotted;
-            border-color: black;
-
-            font-weight: 600;
-            font-size: 14;
-
-        }
-
+     html {
+         width: 350px;
+         height: 100vh;
+         background-color: #FCA50A;
+         display: block;
+         margin-left: auto;
+         margin-right: auto;
+         font-family: 'Roboto', sans-serif;
+     }
+     div#baslik {
+         color: black;
+         font-size: 50;
+         text-align: center;
+         font-weight: bold;
+         width: 350;
+     }
+     div#sistem {
+         width: 350px;
+         font-size: 20px;
+         color: ;
+         margin-top: 10px;
+         text-align: center;
+     }
+     label {
+          font-size: 20;
+     }
+     textarea#hatirla_metin {
+         width: 350;
+         height: 40;
+         border-radius: 10px;
+         border-color: white;
+         width: 350;
+     }
+     select {
+         margin-left: 10;
+         margin-right: 10;
+         font-size: 20
+     }
+     input#ekle {
+         width: 150;
+         height: 40;
+         margin-left: auto;
+         margin-right: auto;
+         margin-top: 13;
+         color: white;
+         background-color: #2A3175;
+         border-color: transparent;
+     }
+     input#sil_no {
+         width: 50;
+         height: 40;
+         background-color: #FF6666;
+         border: transparent;
+         text-align: center;
+     }
+     input#sil {
+       width:  120;
+       height: 40;
+       margin-left: auto;
+       margin-right: auto;
+       margin-top: 13;
+       color: white;
+       background-color: #FF6666;
+       border-color: transparent;
+     }
+     textarea#kayitlar {
+         margin-top: 5;
+         height: 200;
+         width: 350;
+         color: black;
+         background-color: white;
+         border-radius: 10px;
+         border-width: thick;
+         border-style: dotted;
+         border-color: black;
+         font-weight: 600;
+         font-size: 14;
+     }
 
     </style>
 
@@ -109,7 +90,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <audio id="zilsesi" src="zil" preload="auto"></audio>
-        <div id="baslik">Neki Hatırlatıcı<br></div>
+        <div id="baslik">Neki Hatırlatıcı v0.1.2<br></div>
         <div id="sistem">Sistemin saati: <span id="sistem_saat"></span><br>Sistemin tarihi: <span id="sistem_tarih"></span></div>
         <form><br>
             <label>Hatırlatılmasını istediğiniz sey neki?</label><br>
@@ -123,7 +104,7 @@
             <select></select>:
             <select></select><br>
             <input type="button" id="ekle" value="Hatırlatmayı Ekle"></input>
-            <input type="text" id="sil_no" placeholder="num"> </input><input type="button" value="Hatırlatmayı Sil" id="sil"></input><br>
+            <input type="text" id="sil_no" placeholder="num">  </input><input type="button" value="Hatırlartmayı Sil" id="sil"></input><br>
             <textarea disabled id="kayitlar" style="height: 300; width: 330;"></textarea>
             <script>
                 function kiyas_tarih(f) { //tarihi gg/aa/yyyy halinden yyyyaagg haline sokan fonksiyon. karşılaştırmak için
@@ -131,6 +112,7 @@
                 }
 
                 function hafizaya_al() { //Hatırlatmaları JSON kullanmadan(electronda çalışmadığı için) hafızaya alma fonksiyonu
+                    localStorage.clear()
                     for (var n = 0; n < hatirlatmalar.length; n++) {
                         localStorage.setItem("hatirlatmametin_" + n, hatirlatmalar[n].metin)
                         localStorage.setItem("hatirlatmatarih_" + n, hatirlatmalar[n].tarih)
@@ -152,16 +134,24 @@
                 }
 
                 function guncelle_kayitlar() { //hatılatmaların yazdığı kutuyu diziye göre doldurur
-                    document.getElementById("kayitlar").innerHTML = ""
-                    for (var n = 0; n < hatirlatmalar.length; n++) {
-                        document.getElementById("kayitlar").innerHTML += "\n" + (1 * n + 1) + ". hatırlatma: " + hatirlatmalar[n].metin + "\nTarih: " + hatirlatmalar[n].tarih + "\tSaat: " + hatirlatmalar[n].saat + "\n--------------------------------\n"
+
+                    if (hatirlatmalar.length == 0) {
+                        document.getElementById("kayitlar").innerHTML = "                 \n\n                       Ohhh, kafa rahat...\n               Hiç hatırlatma yok şu an."
+                    } else {
+                        document.getElementById("kayitlar").innerHTML = ""
+                        for (var n = 0; n < hatirlatmalar.length; n++) {
+                            document.getElementById("kayitlar").innerHTML += "\n" + (1 * n + 1) + ". hatırlatma: " + hatirlatmalar[n].metin + "\nTarih: " + hatirlatmalar[n].tarih + "\tSaat: " + hatirlatmalar[n].saat + "\n--------------------------------\n"
+                        }
                     }
+
+
                 }
 
                 var hatirlatmalar = [] //meşhur dizi
 
 
                 for (var n = 0; localStorage.getItem("hatirlatmasaat_" + n); n++) { //hafızadan diziye çeken döngü, sistem çalışınca 1 kere çalışır
+
                     hatirlatmalar.push({
                         metin: localStorage.getItem("hatirlatmametin_" + n),
                         tarih: localStorage.getItem("hatirlatmatarih_" + n),
@@ -188,22 +178,22 @@
                 }
                 for (var i = 0; i < 60; i++) {
                     if (i < 24)
-                        document.getElementsByTagName("select")[3][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getUTCHours() + 3 == i)
-                    document.getElementsByTagName("select")[4][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getUTCMinutes() == i)
-                    document.getElementsByTagName("select")[5][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getUTCSeconds() == i)
+                        document.getElementsByTagName("select")[3][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getHours() == i)
+                    document.getElementsByTagName("select")[4][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getMinutes() == i)
+                    document.getElementsByTagName("select")[5][i] = new Option(sifir_ekleyici(i), sifir_ekleyici(i), false, tarih.getSeconds() == i)
 
                 }
 
                 function bilgileri_tazele() { //her saniye çalışan fonksiyon
                     var tarih = new Date()
-                    document.getElementById("sistem_saat").innerHTML = sifir_ekleyici(tarih.getUTCHours() + 3) + ":" + sifir_ekleyici(tarih.getUTCMinutes()) + ":" + sifir_ekleyici(tarih.getUTCSeconds());
+                        //programın saati ve tarihini doldur
+                    document.getElementById("sistem_saat").innerHTML = sifir_ekleyici(tarih.getHours()) + ":" + sifir_ekleyici(tarih.getMinutes()) + ":" + sifir_ekleyici(tarih.getSeconds());
                     document.getElementById("sistem_tarih").innerHTML = sifir_ekleyici(tarih.getDate()) + "/" + sifir_ekleyici(tarih.getMonth() + 1) + "/" + sifir_ekleyici(tarih.getFullYear());
+                    //alarm kontrolü
                     for (var n = 0; n < hatirlatmalar.length; n++) {
-                        if (hatirlatmalar[n].tarih == sifir_ekleyici(tarih.getDate()) + "/" + sifir_ekleyici(tarih.getMonth() + 1) + "/" + sifir_ekleyici(tarih.getFullYear()) && hatirlatmalar[n].saat == sifir_ekleyici(tarih.getUTCHours() + 3) + ":" + sifir_ekleyici(tarih.getUTCMinutes()) + ":" + sifir_ekleyici(tarih.getUTCSeconds())) {
+                        if (hatirlatmalar[n].tarih == sifir_ekleyici(tarih.getDate()) + "/" + sifir_ekleyici(tarih.getMonth() + 1) + "/" + sifir_ekleyici(tarih.getFullYear()) && hatirlatmalar[n].saat == sifir_ekleyici(tarih.getHours()) + ":" + sifir_ekleyici(tarih.getMinutes()) + ":" + sifir_ekleyici(tarih.getSeconds())) {
                             document.getElementById('zilsesi').play();
                             alert("Saat: " + hatirlatmalar[n].saat + "\n" + hatirlatmalar[n].metin)
-                            bilgileri_tazele()
-
                         }
                     }
 
@@ -219,8 +209,7 @@
                         guncelle_kayitlar()
                         hafizaya_al()
                     } else {
-                        alert("Silinecek başka hatırlatma yok veya silincek notu seçmediniz.")
-                        bilgileri_tazele()
+                        alert("Belirttiğiniz hatırlatma bulunmamaktadır!")
                     }
                 }
 
