@@ -1,121 +1,175 @@
 <head>
+    <!--Türkçe karakterleri gösterebilmek için-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <style>
-           html {
-            margin-top: 30px;
+
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
+        html {
+
             width: 350px;
             height: 100vh;
-            background-color: #363636;
+            background-color: #FCA50A;
             display: block;
             margin-left: auto;
             margin-right: auto;
+            font-family: 'Roboto', sans-serif;
         }
 
         div#baslik {
-
-            font-size: 55;
-            font-family: sans-serif;
-            font-weight: thin;
+            color: #515256;
+            font-size: 50;
             text-align: center;
-            color: white;
-            border-style: solid;
-            border-width: 1;
-            border-top-width: 1px;
-            border-right-width: 1px;
-            border-bottom-width: 1px;
-            border-left-width: 1px;
-            width: 310;
+            font-weight: bold;
+            border-style: dotted;
+            width: 350;
         }
 
-/*Sistemin saati ve tarihi */
-
-         div#sistem {
-            margin-top: 30px;
-            color: white;
-            font-size: 35px;
-            font-weight: bolder;
-            margin-left: 11;
-            text-align: center;
-        }
-
-         label {
-           margin-top: 10px;
-          color: #BABABA;
-          font-style: normal;
-          font-size: 35px;
-          font-weight: bolder;
-          margin-left: 11;
-          text-align: center;
-        }
-/* hatırlatma notu */
-        textarea#hatirla_metin {
+        div#sistem {
+            width: 350px;
+            font-size: 20px;
+            color: black;
             margin-top: 10px;
-            width: 250;
-            color: green;
-            border-radius: 5px;
-            border-color: #BABABA;
-            width: 330;
-            height: 200;
-            margin-bottom: 10px;
+            text-align: center;
+        }
 
+        label {
+
+             font-size: 20;
+
+        }
+
+        textarea#hatirla_metin {
+            width: 350;
+            height: 40;
+            border-radius: 10px;
+            border-color: white;
+            width: 350;
         }
 
         select {
-            display: block; width: 100px;
-            display: block; height: 60px;
-            margin-top: 10px;
-            margin-bottom: 10px;
             margin-left: 10;
             margin-right: 10;
-            border-color: #BABABA;
-            border-radius: 10px;
+            font-size: 30
         }
 
         input#ekle {
-
-            display: block;
+            width: 150;
+            height: 40;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 30;
-            background-color: darkred;
-            font-size: 30px;
+            margin-top: 13;
             color: white;
-            width: 340;
-            height: 100;
+            background-color: #2A3175;
+            border-color: transparent;
 
+        }
+
+        input#sil_no {
+            width: 50;
+            height: 40;
+            background-color: #FF6666;
+            border: transparent;
+            text-align: center;
+
+        }
+
+        input#sil {
+          width:  120;
+          height: 40;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 13;
+          color: white;
+          background-color: #FF6666;
         }
 
         textarea#kayitlar {
-            height: 300;
-            width: 330;
-            background-color: ghostwhite;
-            border: none;
-            background-color: darkgray;
+            margin-top: 5;
+            height: 200;
+            width: 350;
+            color: black;
+            background-color: transparent;
+            border-radius: 10px;
+            border-width: thick;
+            border-style: dotted;
+            border-color: black;
+
+            font-weight: 600;
+            font-size: 14;
+
         }
 
-}
 
     </style>
 
     <body>
+        <!--Mobil cihazların ekranına tam oturması için-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <audio id="zilsesi" src="zil" preload="auto"></audio>
-        <div id="baslik">Neki Hatirlatici v0.1.1<br></div>
+        <div id="baslik">Neki Hatırlatıcı<br></div>
         <div id="sistem">Sistemin saati: <span id="sistem_saat"></span><br>Sistemin tarihi: <span id="sistem_tarih"></span></div>
         <form><br>
-            <label>Hatirlatilmasini istediginiz sey neki?</label><br>
-            <textarea type="text" id="hatirla_metin"></textarea><br>
-            <label>Hatirlatilmasini istediginiz gun neki?</label><br>
+            <label>Hatırlatılmasını istediğiniz sey neki?</label><br>
+            <textarea type="text" id="hatirla_metin" placeholder="Örnek: Windows güncellemesini yükle."></textarea><br>
+            <label>Hatırlatılmasını istediğiniz gun neki?</label><br>
             <select></select>/
             <select></select>/
             <select></select><br>
-            <label>Hatirlatilmasini istediginiz saat neki?</label><br>
+            <label>Hatırlatılmasını istediğiniz saat neki?</label><br>
             <select></select>:
             <select></select>:
             <select></select><br>
-            <input type="button" id="ekle" value="Hatirlatmayi Ekle"></input><br>
-            <textarea id="kayitlar" style="height: 300; width: 330;"></textarea>
+            <input type="button" id="ekle" value="Hatırlatmayı Ekle"></input>
+            <input type="text" id="sil_no" placeholder="num"> </input><input type="button" value="Hatırlatmayı Sil" id="sil"></input><br>
+            <textarea disabled id="kayitlar" style="height: 300; width: 330;"></textarea>
             <script>
-                var hatirlatmalar = []
-                var hat_sayisi = 0
+                function kiyas_tarih(f) { //tarihi gg/aa/yyyy halinden yyyyaagg haline sokan fonksiyon. karşılaştırmak için
+                    return hatirlatmalar[f].tarih.substring(6, 10) + hatirlatmalar[f].tarih.substring(3, 5) + hatirlatmalar[f].tarih.substring(0, 2);
+                }
+
+                function hafizaya_al() { //Hatırlatmaları JSON kullanmadan(electronda çalışmadığı için) hafızaya alma fonksiyonu
+                    for (var n = 0; n < hatirlatmalar.length; n++) {
+                        localStorage.setItem("hatirlatmametin_" + n, hatirlatmalar[n].metin)
+                        localStorage.setItem("hatirlatmatarih_" + n, hatirlatmalar[n].tarih)
+                        localStorage.setItem("hatirlatmasaat_" + n, hatirlatmalar[n].saat)
+                    }
+                    //Dizinin alt elemanlarını ayrı ayrı hafızalarda tuttum. Buna gerek olmayabilirdi. Sonra bakacağım.
+                }
+
+                function sirala() { //Hatırlatmaların gösterildiği yere hatırlatmaları zamana göre sıralaması için fonksiyon
+                    for (var m = hatirlatmalar.length - 1; m > 0; m--) {
+                        for (var n = 0; n < m; n++) {
+                            if (kiyas_tarih(n) + hatirlatmalar[n].saat > kiyas_tarih(n + 1) + hatirlatmalar[n + 1].saat) {
+                                var temp = hatirlatmalar[n + 1]
+                                hatirlatmalar[n + 1] = hatirlatmalar[n]
+                                hatirlatmalar[n] = temp
+                            }
+                        }
+                    }
+                }
+
+                function guncelle_kayitlar() { //hatılatmaların yazdığı kutuyu diziye göre doldurur
+                    document.getElementById("kayitlar").innerHTML = ""
+                    for (var n = 0; n < hatirlatmalar.length; n++) {
+                        document.getElementById("kayitlar").innerHTML += "\n" + (1 * n + 1) + ". hatırlatma: " + hatirlatmalar[n].metin + "\nTarih: " + hatirlatmalar[n].tarih + "\tSaat: " + hatirlatmalar[n].saat + "\n--------------------------------\n"
+                    }
+                }
+
+                var hatirlatmalar = [] //meşhur dizi
+
+
+                for (var n = 0; localStorage.getItem("hatirlatmasaat_" + n); n++) { //hafızadan diziye çeken döngü, sistem çalışınca 1 kere çalışır
+                    hatirlatmalar.push({
+                        metin: localStorage.getItem("hatirlatmametin_" + n),
+                        tarih: localStorage.getItem("hatirlatmatarih_" + n),
+                        saat: localStorage.getItem("hatirlatmasaat_" + n)
+                    })
+                }
+
+                guncelle_kayitlar() //hafızadan alınan bilgilerle doldurulan diziyi yazı kutuya döker
+
 
                 function sifir_ekleyici(f) {
                     return (f < 10) ? "0" + f : f
@@ -139,11 +193,11 @@
 
                 }
 
-                function bilgileri_tazele() {
+                function bilgileri_tazele() { //her saniye çalışan fonksiyon
                     var tarih = new Date()
                     document.getElementById("sistem_saat").innerHTML = sifir_ekleyici(tarih.getUTCHours() + 3) + ":" + sifir_ekleyici(tarih.getUTCMinutes()) + ":" + sifir_ekleyici(tarih.getUTCSeconds());
                     document.getElementById("sistem_tarih").innerHTML = sifir_ekleyici(tarih.getDate()) + "/" + sifir_ekleyici(tarih.getMonth() + 1) + "/" + sifir_ekleyici(tarih.getFullYear());
-                    for (var n = 0; n < hat_sayisi; n++) {
+                    for (var n = 0; n < hatirlatmalar.length; n++) {
                         if (hatirlatmalar[n].tarih == sifir_ekleyici(tarih.getDate()) + "/" + sifir_ekleyici(tarih.getMonth() + 1) + "/" + sifir_ekleyici(tarih.getFullYear()) && hatirlatmalar[n].saat == sifir_ekleyici(tarih.getUTCHours() + 3) + ":" + sifir_ekleyici(tarih.getUTCMinutes()) + ":" + sifir_ekleyici(tarih.getUTCSeconds())) {
                             document.getElementById('zilsesi').play();
                             alert("Saat: " + hatirlatmalar[n].saat + "\n" + hatirlatmalar[n].metin)
@@ -154,49 +208,40 @@
 
                 }
 
+                //silme fonksiyonu
+                document.getElementById("sil").onclick = function() {
+                    if (hatirlatmalar[document.getElementById("sil_no").value - 1]) {
+                        hatirlatmalar[document.getElementById("sil_no").value - 1]
+                        hatirlatmalar[document.getElementById("sil_no").value - 1]
+                        sirala()
+                        hatirlatmalar.pop()
+                        guncelle_kayitlar()
+                        hafizaya_al()
+                    } else {
+                        alert("Belirtiğiniz hatırlatma yanlış olmalı!")
+                        bilgileri_tazele()
+                    }
+                }
 
+                //ekleme fonksiyonu
                 document.getElementById("ekle").onclick = function() {
+                    function kiyas_tarih(f) {
+                        return hatirlatmalar[f].tarih.substring(6, 10) + hatirlatmalar[f].tarih.substring(3, 5) + hatirlatmalar[f].tarih.substring(0, 2);
+                    }
+
                     hatirlatmalar.push({
                         metin: document.getElementById("hatirla_metin").value,
                         tarih: document.getElementsByTagName("select")[0].value + "/" + document.getElementsByTagName("select")[1].value + "/" + document.getElementsByTagName("select")[2].value,
                         saat: document.getElementsByTagName("select")[3].value + ":" + document.getElementsByTagName("select")[4].value + ":" + document.getElementsByTagName("select")[5].value,
-                        kiyas_tarih: document.getElementsByTagName("select")[2].value + document.getElementsByTagName("select")[1].value + document.getElementsByTagName("select")[0].value
                     })
 
-                    hat_sayisi++
-                    //tarihe göre
-                    for (var m = 0; m < ((hat_sayisi - 1) ** 2); m++) {
-                        var n = m % (hat_sayisi - 1)
-                        if (hatirlatmalar[n].kiyas_tarih > hatirlatmalar[n + 1].kiyas_tarih) {
-                            var temp = hatirlatmalar[n + 1]
-                            hatirlatmalar[n + 1] = hatirlatmalar[n]
-                            hatirlatmalar[n] = temp
-                        }
-                    }
-                    //saate göre
-                    for (var m = 0; m < ((hat_sayisi - 1) ** 2); m++) {
-                        var n = m % (hat_sayisi - 1)
-                        if (hatirlatmalar[n].saat > hatirlatmalar[n + 1].saat) {
-                            var temp = hatirlatmalar[n + 1]
-                            hatirlatmalar[n + 1] = hatirlatmalar[n]
-                            hatirlatmalar[n] = temp
-                        }
-                    }
 
-                    /*
-                                        for (m = 0; m != ((hat_sayisi ^ 2) - hat_sayisi) / 2; m++) {
-                                            m = m % hat_sayisi
-                                            if (hatirlatmalar[m].saat > hatirlatmalar[m + 1].saat) {
-                                                var temp = hatirlatmalar[m + 1]
-                                                hatirlatmalar[m + 1] = hatirlatmalar[m]
-                                                hatirlatmalar[m] = temp
-                                            }
-                                        }
-                    */
-                    document.getElementById("kayitlar").innerHTML = ""
-                    for (var n = 0; n < hat_sayisi; n++) {
-                        document.getElementById("kayitlar").innerHTML += "\n" + (1 * n + 1) + ". hatirlatma: " + hatirlatmalar[n].metin + "\nTarih: " + hatirlatmalar[n].tarih + "\tSaat: " + hatirlatmalar[n].saat + "\n\n"
-                    }
+                    sirala()
+
+
+                    hafizaya_al()
+                    guncelle_kayitlar()
+
 
                 }
 
